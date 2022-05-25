@@ -2248,8 +2248,10 @@ func (e ExternalDocs) MarshalJSON() ([]byte, error) {
 
 // OperationBindingsObject structure is generated from "#/definitions/operationBindingsObject".
 type OperationBindingsObject struct {
-	HTTP *interface{} `json:"http,omitempty"`
-	Ws   *interface{} `json:"ws,omitempty"`
+	// Operation Schema.
+	// This object contains information about the operation representation in HTTP.
+	HTTP *OperationSchema `json:"http,omitempty"`
+	Ws   *interface{}     `json:"ws,omitempty"`
 	// AMQP 0-9-1 Operation Binding Object.
 	// This object contains information about the operation representation in AMQP.
 	// See https://github.com/asyncapi/bindings/tree/master/amqp#operation-binding-object.
@@ -2269,9 +2271,18 @@ type OperationBindingsObject struct {
 }
 
 // WithHTTP sets HTTP value.
-func (o *OperationBindingsObject) WithHTTP(val interface{}) *OperationBindingsObject {
+func (o *OperationBindingsObject) WithHTTP(val OperationSchema) *OperationBindingsObject {
 	o.HTTP = &val
 	return o
+}
+
+// HTTPEns ensures returned HTTP is not nil.
+func (o *OperationBindingsObject) HTTPEns() *OperationSchema {
+	if o.HTTP == nil {
+		o.HTTP = new(OperationSchema)
+	}
+
+	return o.HTTP
 }
 
 // WithWs sets Ws value.
@@ -2415,13 +2426,6 @@ func (o *OperationBindingsObject) UnmarshalJSON(data []byte) error {
 		rawMap = nil
 	}
 
-	if mo.HTTP == nil {
-		if _, ok := rawMap["http"]; ok {
-			var v interface{}
-			mo.HTTP = &v
-		}
-	}
-
 	if mo.Ws == nil {
 		if _, ok := rawMap["ws"]; ok {
 			var v interface{}
@@ -2537,6 +2541,296 @@ func (o OperationBindingsObject) MarshalJSON() ([]byte, error) {
 	}
 
 	return marshalUnion(marshalOperationBindingsObject(o), o.AdditionalProperties)
+}
+
+// OperationSchema structure is generated from "http-operation-binding-object-0.1.0.json".
+//
+// Operation Schema.
+//
+// This object contains information about the operation representation in HTTP.
+type OperationSchema struct {
+	// Required. Type of operation. Its value MUST be either 'request' or 'response'.
+	// Required.
+	Type                                    OperationSchemaType                      `json:"type"`
+	Method                                  OperationSchemaMethod                    `json:"method,omitempty"` // When 'type' is 'request', this is the HTTP method, otherwise it MUST be ignored. Its value MUST be one of 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS', 'CONNECT', and 'TRACE'.
+	Query                                   map[string]interface{}                   `json:"query,omitempty"`
+	HTTPOperationBindingObject010JSONOneOf0 *HTTPOperationBindingObject010JSONOneOf0 `json:"-"`
+	HTTPOperationBindingObject010JSONOneOf1 *HTTPOperationBindingObject010JSONOneOf1 `json:"-"`
+	MapOfAnything                           map[string]interface{}                   `json:"-"` // Key must match pattern: `^x-[\w\d\.\-\_]+$`.
+}
+
+// WithType sets Type value.
+func (o *OperationSchema) WithType(val OperationSchemaType) *OperationSchema {
+	o.Type = val
+	return o
+}
+
+// WithMethod sets Method value.
+func (o *OperationSchema) WithMethod(val OperationSchemaMethod) *OperationSchema {
+	o.Method = val
+	return o
+}
+
+// WithQuery sets Query value.
+func (o *OperationSchema) WithQuery(val map[string]interface{}) *OperationSchema {
+	o.Query = val
+	return o
+}
+
+// WithQueryItem sets Query item value.
+func (o *OperationSchema) WithQueryItem(key string, val interface{}) *OperationSchema {
+	if o.Query == nil {
+		o.Query = make(map[string]interface{}, 1)
+	}
+
+	o.Query[key] = val
+
+	return o
+}
+
+// WithHTTPOperationBindingObject010JSONOneOf0 sets HTTPOperationBindingObject010JSONOneOf0 value.
+func (o *OperationSchema) WithHTTPOperationBindingObject010JSONOneOf0(val HTTPOperationBindingObject010JSONOneOf0) *OperationSchema {
+	o.HTTPOperationBindingObject010JSONOneOf0 = &val
+	return o
+}
+
+// HTTPOperationBindingObject010JSONOneOf0Ens ensures returned HTTPOperationBindingObject010JSONOneOf0 is not nil.
+func (o *OperationSchema) HTTPOperationBindingObject010JSONOneOf0Ens() *HTTPOperationBindingObject010JSONOneOf0 {
+	if o.HTTPOperationBindingObject010JSONOneOf0 == nil {
+		o.HTTPOperationBindingObject010JSONOneOf0 = new(HTTPOperationBindingObject010JSONOneOf0)
+	}
+
+	return o.HTTPOperationBindingObject010JSONOneOf0
+}
+
+// WithHTTPOperationBindingObject010JSONOneOf1 sets HTTPOperationBindingObject010JSONOneOf1 value.
+func (o *OperationSchema) WithHTTPOperationBindingObject010JSONOneOf1(val HTTPOperationBindingObject010JSONOneOf1) *OperationSchema {
+	o.HTTPOperationBindingObject010JSONOneOf1 = &val
+	return o
+}
+
+// HTTPOperationBindingObject010JSONOneOf1Ens ensures returned HTTPOperationBindingObject010JSONOneOf1 is not nil.
+func (o *OperationSchema) HTTPOperationBindingObject010JSONOneOf1Ens() *HTTPOperationBindingObject010JSONOneOf1 {
+	if o.HTTPOperationBindingObject010JSONOneOf1 == nil {
+		o.HTTPOperationBindingObject010JSONOneOf1 = new(HTTPOperationBindingObject010JSONOneOf1)
+	}
+
+	return o.HTTPOperationBindingObject010JSONOneOf1
+}
+
+// WithMapOfAnything sets MapOfAnything value.
+func (o *OperationSchema) WithMapOfAnything(val map[string]interface{}) *OperationSchema {
+	o.MapOfAnything = val
+	return o
+}
+
+// WithMapOfAnythingItem sets MapOfAnything item value.
+func (o *OperationSchema) WithMapOfAnythingItem(key string, val interface{}) *OperationSchema {
+	if o.MapOfAnything == nil {
+		o.MapOfAnything = make(map[string]interface{}, 1)
+	}
+
+	o.MapOfAnything[key] = val
+
+	return o
+}
+
+type marshalOperationSchema OperationSchema
+
+var knownKeysOperationSchema = []string{
+	"type",
+	"method",
+	"query",
+	"bindingVersion",
+}
+
+var requireKeysOperationSchema = []string{
+	"type",
+}
+
+// UnmarshalJSON decodes JSON.
+func (o *OperationSchema) UnmarshalJSON(data []byte) error {
+	var err error
+
+	mo := marshalOperationSchema(*o)
+
+	err = json.Unmarshal(data, &mo)
+	if err != nil {
+		return err
+	}
+
+	oneOfErrors := make(map[string]error, 2)
+	oneOfValid := 0
+
+	err = json.Unmarshal(data, &mo.HTTPOperationBindingObject010JSONOneOf0)
+	if err != nil {
+		oneOfErrors["HTTPOperationBindingObject010JSONOneOf0"] = err
+		mo.HTTPOperationBindingObject010JSONOneOf0 = nil
+	} else {
+		oneOfValid++
+	}
+
+	err = json.Unmarshal(data, &mo.HTTPOperationBindingObject010JSONOneOf1)
+	if err != nil {
+		oneOfErrors["HTTPOperationBindingObject010JSONOneOf1"] = err
+		mo.HTTPOperationBindingObject010JSONOneOf1 = nil
+	} else {
+		oneOfValid++
+	}
+
+	if oneOfValid != 1 {
+		return fmt.Errorf("oneOf constraint failed for OperationSchema with %d valid results: %v", oneOfValid, oneOfErrors)
+	}
+
+	var rawMap map[string]json.RawMessage
+
+	err = json.Unmarshal(data, &rawMap)
+	if err != nil {
+		rawMap = nil
+	}
+
+	for _, key := range requireKeysOperationSchema {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
+	}
+
+	if v, exists := rawMap["bindingVersion"]; exists && string(v) != `"0.1.0"` {
+		return fmt.Errorf(`bad const value for "bindingVersion" ("0.1.0" expected, %s received)`, v)
+	}
+
+	delete(rawMap, "bindingVersion")
+
+	for _, key := range knownKeysOperationSchema {
+		delete(rawMap, key)
+	}
+
+	for key, rawValue := range rawMap {
+		matched := false
+
+		if regexXWD.MatchString(key) {
+			matched = true
+
+			if mo.MapOfAnything == nil {
+				mo.MapOfAnything = make(map[string]interface{}, 1)
+			}
+
+			var val interface{}
+
+			err = json.Unmarshal(rawValue, &val)
+			if err != nil {
+				return err
+			}
+
+			mo.MapOfAnything[key] = val
+		}
+
+		if matched {
+			delete(rawMap, key)
+		}
+	}
+
+	if len(rawMap) != 0 {
+		offendingKeys := make([]string, 0, len(rawMap))
+
+		for key := range rawMap {
+			offendingKeys = append(offendingKeys, key)
+		}
+
+		return fmt.Errorf("additional properties not allowed in OperationSchema: %v", offendingKeys)
+	}
+
+	*o = OperationSchema(mo)
+
+	return nil
+}
+
+// constOperationSchema is unconditionally added to JSON.
+var constOperationSchema = json.RawMessage(`{"bindingVersion":"0.1.0"}`)
+
+// MarshalJSON encodes JSON.
+func (o OperationSchema) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constOperationSchema, marshalOperationSchema(o), o.MapOfAnything, o.HTTPOperationBindingObject010JSONOneOf0, o.HTTPOperationBindingObject010JSONOneOf1)
+}
+
+// HTTPOperationBindingObject010JSONOneOf0 structure is generated from "http-operation-binding-object-0.1.0.json/oneOf/0".
+type HTTPOperationBindingObject010JSONOneOf0 struct {
+}
+
+var requireKeysHTTPOperationBindingObject010JSONOneOf0 = []string{
+	"method",
+}
+
+// UnmarshalJSON decodes JSON.
+func (h *HTTPOperationBindingObject010JSONOneOf0) UnmarshalJSON(data []byte) error {
+	var err error
+
+	var rawMap map[string]json.RawMessage
+
+	err = json.Unmarshal(data, &rawMap)
+	if err != nil {
+		rawMap = nil
+	}
+
+	for _, key := range requireKeysHTTPOperationBindingObject010JSONOneOf0 {
+		if _, found := rawMap[key]; !found {
+			return errors.New("required key missing: " + key)
+		}
+	}
+
+	if v, exists := rawMap["type"]; exists && string(v) != `"request"` {
+		return fmt.Errorf(`bad const value for "type" ("request" expected, %s received)`, v)
+	}
+
+	delete(rawMap, "type")
+
+	return nil
+}
+
+// constHTTPOperationBindingObject010JSONOneOf0 is unconditionally added to JSON.
+var constHTTPOperationBindingObject010JSONOneOf0 = json.RawMessage(`{"type":"request"}`)
+
+// MarshalJSON encodes JSON.
+func (h HTTPOperationBindingObject010JSONOneOf0) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constHTTPOperationBindingObject010JSONOneOf0)
+}
+
+// HTTPOperationBindingObject010JSONOneOf1 structure is generated from "http-operation-binding-object-0.1.0.json/oneOf/1".
+type HTTPOperationBindingObject010JSONOneOf1 struct {
+}
+
+// UnmarshalJSON decodes JSON.
+func (h *HTTPOperationBindingObject010JSONOneOf1) UnmarshalJSON(data []byte) error {
+	var err error
+
+	var not interface{}
+
+	if json.Unmarshal(data, &not) == nil {
+		return errors.New("not constraint failed for HTTPOperationBindingObject010JSONOneOf1")
+	}
+
+	var rawMap map[string]json.RawMessage
+
+	err = json.Unmarshal(data, &rawMap)
+	if err != nil {
+		rawMap = nil
+	}
+
+	if v, exists := rawMap["is"]; exists && string(v) != `"response"` {
+		return fmt.Errorf(`bad const value for "is" ("response" expected, %s received)`, v)
+	}
+
+	delete(rawMap, "is")
+
+	return nil
+}
+
+// constHTTPOperationBindingObject010JSONOneOf1 is unconditionally added to JSON.
+var constHTTPOperationBindingObject010JSONOneOf1 = json.RawMessage(`{"is":"response"}`)
+
+// MarshalJSON encodes JSON.
+func (h HTTPOperationBindingObject010JSONOneOf1) MarshalJSON() ([]byte, error) {
+	return marshalUnion(constHTTPOperationBindingObject010JSONOneOf1)
 }
 
 // AMQP091OperationBindingObject structure is generated from "amqp-operation-binding-object-0.1.0.json".
@@ -7860,6 +8154,119 @@ func (c *ComponentsCorrelationIds) UnmarshalJSON(data []byte) error {
 // MarshalJSON encodes JSON.
 func (c ComponentsCorrelationIds) MarshalJSON() ([]byte, error) {
 	return marshalUnion(c.MapOfComponentsCorrelationIdsWDValues)
+}
+
+// OperationSchemaType is an enum type.
+type OperationSchemaType string
+
+// OperationSchemaType values enumeration.
+const (
+	OperationSchemaTypeRequest  = OperationSchemaType("request")
+	OperationSchemaTypeResponse = OperationSchemaType("response")
+)
+
+// MarshalJSON encodes JSON.
+func (i OperationSchemaType) MarshalJSON() ([]byte, error) {
+	switch i {
+	case OperationSchemaTypeRequest:
+	case OperationSchemaTypeResponse:
+
+	default:
+		return nil, fmt.Errorf("unexpected OperationSchemaType value: %v", i)
+	}
+
+	return json.Marshal(string(i))
+}
+
+// UnmarshalJSON decodes JSON.
+func (i *OperationSchemaType) UnmarshalJSON(data []byte) error {
+	var ii string
+
+	err := json.Unmarshal(data, &ii)
+	if err != nil {
+		return err
+	}
+
+	v := OperationSchemaType(ii)
+
+	switch v {
+	case OperationSchemaTypeRequest:
+	case OperationSchemaTypeResponse:
+
+	default:
+		return fmt.Errorf("unexpected OperationSchemaType value: %v", v)
+	}
+
+	*i = v
+
+	return nil
+}
+
+// OperationSchemaMethod is an enum type.
+type OperationSchemaMethod string
+
+// OperationSchemaMethod values enumeration.
+const (
+	OperationSchemaMethodGET     = OperationSchemaMethod("GET")
+	OperationSchemaMethodPUT     = OperationSchemaMethod("PUT")
+	OperationSchemaMethodPOST    = OperationSchemaMethod("POST")
+	OperationSchemaMethodPATCH   = OperationSchemaMethod("PATCH")
+	OperationSchemaMethodDELETE  = OperationSchemaMethod("DELETE")
+	OperationSchemaMethodHEAD    = OperationSchemaMethod("HEAD")
+	OperationSchemaMethodOPTIONS = OperationSchemaMethod("OPTIONS")
+	OperationSchemaMethodCONNECT = OperationSchemaMethod("CONNECT")
+	OperationSchemaMethodTRACE   = OperationSchemaMethod("TRACE")
+)
+
+// MarshalJSON encodes JSON.
+func (i OperationSchemaMethod) MarshalJSON() ([]byte, error) {
+	switch i {
+	case OperationSchemaMethodGET:
+	case OperationSchemaMethodPUT:
+	case OperationSchemaMethodPOST:
+	case OperationSchemaMethodPATCH:
+	case OperationSchemaMethodDELETE:
+	case OperationSchemaMethodHEAD:
+	case OperationSchemaMethodOPTIONS:
+	case OperationSchemaMethodCONNECT:
+	case OperationSchemaMethodTRACE:
+
+	default:
+		return nil, fmt.Errorf("unexpected OperationSchemaMethod value: %v", i)
+	}
+
+	return json.Marshal(string(i))
+}
+
+// UnmarshalJSON decodes JSON.
+func (i *OperationSchemaMethod) UnmarshalJSON(data []byte) error {
+	var ii string
+
+	err := json.Unmarshal(data, &ii)
+	if err != nil {
+		return err
+	}
+
+	v := OperationSchemaMethod(ii)
+
+	switch v {
+	case OperationSchemaMethodGET:
+	case OperationSchemaMethodPUT:
+	case OperationSchemaMethodPOST:
+	case OperationSchemaMethodPATCH:
+	case OperationSchemaMethodDELETE:
+	case OperationSchemaMethodHEAD:
+	case OperationSchemaMethodOPTIONS:
+	case OperationSchemaMethodCONNECT:
+	case OperationSchemaMethodTRACE:
+
+	default:
+		return fmt.Errorf("unexpected OperationSchemaMethod value: %v", v)
+	}
+
+	*i = v
+
+	return nil
 }
 
 // AMQP091OperationBindingObjectDeliveryMode is an enum type.

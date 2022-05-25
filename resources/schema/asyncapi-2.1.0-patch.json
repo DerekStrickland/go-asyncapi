@@ -110,7 +110,7 @@
   "value":{
    "type":"object","additionalProperties":true,
    "properties":{
-    "http":{},"ws":{},"amqp":{"$ref":"amqp-operation-binding-object-0.1.0.json"},"amqp1":{},
+    "http":{"$ref":"http-operation-binding-object-0.1.0.json"},"ws":{},"amqp":{"$ref":"amqp-operation-binding-object-0.1.0.json"},"amqp1":{},
     "mqtt":{},"mqtt5":{},"kafka":{},"nats":{},"jms":{},"sns":{},"sqs":{},"stomp":{},"redis":{},
     "ibmmq":{}
    }
